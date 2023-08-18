@@ -14,48 +14,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.model.Produto;
-import com.example.demo.repository.ProdutoRepository;
+import com.example.demo.service.ProdutoService;
 
 @RestController
 @RequestMapping("/api/")
 public class ProdutoController {
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
 
     @GetMapping("/produtos")
     public List<Produto> getAllProdutos(){
-        return produtoRepository.findAll();
+        return produtoService.getAllProdutos();
     }
 
     @PostMapping("/produtos")
     public Produto createProduto(@RequestBody Produto produto) {
-        return produtoRepository.save(produto);
+        return produtoService.createProduto(produto);
     }
 
     @GetMapping("/produtos/{id}")
     public Produto getProdutoById(@PathVariable Long id) {
-        Produto produto = produtoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException(String.format("Produto de ID %d não encontrado", id)));
-        return produto;
+        return produtoService.getProdutoById(id);
     }
 
     @PatchMapping("/produtos/{id}")
     public Produto updateProduto(@PathVariable Long id, @RequestBody Produto body) {
-        Produto produto = produtoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException(String.format("Produto de ID %d não encontrado", id)));
-        produto.setNome(body.getNome());
-        produto.setQuantidade(body.getQuantidade());
-        return produtoRepository.save(produto);
+        return produtoService.updateProduto(id, body);
     }
 
     @DeleteMapping("/produtos/{id}")
     public Map<String, Boolean> deleteProduto(@PathVariable Long id) {
-        Produto produto = produtoRepository.findById(id)
-        .orElseThrow(() -> new ResourceNotFoundException(String.format("Produto de ID %d não encontrado", id)));
-        produtoRepository.delete(produto);
+        produtoService.deleteProduto(id);
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("deleted", Boolean.TRUE);
 		return response;
