@@ -18,33 +18,33 @@ import com.example.demo.model.Produto;
 import com.example.demo.service.ProdutoService;
 
 @RestController
-@RequestMapping("/api/")
+@RequestMapping("/api/produtos")
 public class ProdutoController {
 
     @Autowired
     private ProdutoService produtoService;
 
-    @GetMapping("/produtos")
+    @GetMapping()
     public List<Produto> getAllProdutos(){
         return produtoService.getAllProdutos();
     }
 
-    @PostMapping("/produtos")
+    @PostMapping()
     public Produto createProduto(@RequestBody Produto produto) {
         return produtoService.createProduto(produto);
     }
 
-    @GetMapping("/produtos/{id}")
+    @GetMapping("/{id}")
     public Produto getProdutoById(@PathVariable Long id) {
         return produtoService.getProdutoById(id);
     }
 
-    @PatchMapping("/produtos/{id}")
+    @PatchMapping("/{id}")
     public Produto updateProduto(@PathVariable Long id, @RequestBody Produto body) {
         return produtoService.updateProduto(id, body);
     }
 
-    @DeleteMapping("/produtos/{id}")
+    @DeleteMapping("/{id}")
     public Map<String, Boolean> deleteProduto(@PathVariable Long id) {
         produtoService.deleteProduto(id);
 		Map<String, Boolean> response = new HashMap<>();
