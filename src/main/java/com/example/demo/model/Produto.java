@@ -18,6 +18,12 @@ public class Produto {
 
     private Integer quantidade;
 
+    public Produto(Long id, String nome, Integer quantidade){
+        this.id = id;
+        this.nome = nome;
+        this.quantidade = quantidade;
+    }
+
     public Long getId() {
         return this.id;
     }
